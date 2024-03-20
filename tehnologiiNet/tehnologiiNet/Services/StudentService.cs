@@ -1,4 +1,7 @@
 using tehnologiiNet.Entities;
+using tehnologiiNet.Models.DTO;
+using tehnologiiNet.Repositories;
+using tehnologiiNet.Repositories.Interfaces;
 using tehnologiiNet.Services.Interfaces;
 
 namespace tehnologiiNet.Services;
@@ -6,55 +9,47 @@ namespace tehnologiiNet.Services;
 public class StudentService:IStudentService
 {
     private List<Student> Students;
-
-    public StudentService()
+    private readonly IStudentsRepository _studentsRepository;
+    public StudentService(IStudentsRepository studentsRepository)
     {
-        Students = new List<Student>()
+        _studentsRepository = studentsRepository;
+
+    }
+    public List<StudentDTO> GetAll()
+    {
+        return _studentsRepository.GetAll().Select(x=>new StudentDTO()
         {
-            new Student()
-            {
-                Id = 1, City = "Craiova", 
-                LastName = "Ion", 
-                FirstName = "Popescu", 
-                Email = "ionpopescu@student.ucv.ro", 
-            } ,
-            
-            new Student()
-            {
-                Id = 2, City = "Craiova", 
-                LastName = "Andrei", 
-                FirstName = "Popescu", 
-                Email = "andreipopescu@student.ucv.ro", 
-            },
-            
-            new Student()
-            {
-                Id = 3, City = "Craiova", 
-                LastName = "Mircea", 
-                FirstName = "Ionescu", 
-                Email = "mirceapopescu@student.ucv.ro", 
-            },
-            new Student()
-            {
-                Id = 4, City = "Pitesti", 
-                LastName = "Florin", 
-                FirstName = "Albu", 
-                Email = "florinalbu@student.ucv.ro", 
-            }
+            Address = x.Address,
+            City=x.City,
+            email = x.Email,
+            FirstName = x.FirstName,
+            LastName = x.LastName
+        }).ToList();
+    }
+
+    public StudentDTO GetById(long Id)
+    {
+        var student = _studentsRepository.GetById(Id);
+        
+        return new StudentDTO()
+        {
+            Address = student.Address,
+            City=student.City,
+            email = student.Email,
+            FirstName = student.FirstName,
+            LastName = student.LastName
         };
     }
-    public List<Student> GetAll()
-    {
-        return this.Students;
-    }
 
-    public Student GetById(long Id)
+    public List<StudentDTO> GetFromCity(string City)
     {
-        return this.Students.Where(x => x.Id == Id).FirstOrDefault();
-    }
-
-    public List<Student> GetFromCity(string City)
-    {
-        return this.Students.Where(x => x.City == City).ToList();
+        return _studentsRepository.GetFromCity(City).Select(x=>new StudentDTO()
+        {
+            Address = x.Address,
+            City=x.City,
+            email = x.Email,
+            FirstName = x.FirstName,
+            LastName = x.LastName
+        }).ToList();
     }
 }

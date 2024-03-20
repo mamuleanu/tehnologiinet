@@ -1,7 +1,10 @@
+using System.ComponentModel.DataAnnotations;
+
 namespace tehnologiiNet.Entities;
 
 public class Student
 {
+    [Key]
     public long Id { get; set; }
     public string FirstName { get; set; }
     public string LastName { get; set; }

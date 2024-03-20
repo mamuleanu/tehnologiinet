@@ -7,4 +7,5 @@ public class DemoEntity
     [Key]
     public long Id { get; set; }
     public string SomeName { get; set; }
+    public string SecondName { get; set; }
 }

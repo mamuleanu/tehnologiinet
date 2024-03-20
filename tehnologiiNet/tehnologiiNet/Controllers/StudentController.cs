@@ -1,17 +1,18 @@
 using Microsoft.AspNetCore.Mvc;
 using tehnologiiNet.Services;
+using tehnologiiNet.Services.Interfaces;
 
 namespace tehnologiiNet.Controllers;
 [ApiController]
 [Route("[controller]")]
 public class StudentController : ControllerBase
 {
-    private StudentService _studentService;
+    private readonly IStudentService _studentService;
 
-    public StudentController()
+    public StudentController(IStudentService studentService)
     {
-        _studentService = new StudentService();
-        
+        _studentService = studentService;
+
     }
     [HttpGet]
     public IActionResult All()
